@@ -1,4 +1,4 @@
---[[	OpenInExplorer plugin for darktable
+--[[OpenInExplorer plugin for darktable
 
   copyright (c) 2018  Kevin Ertel
   
@@ -16,21 +16,26 @@
   along with darktable.  If not, see <http://www.gnu.org/licenses/>.
 ]]
 
---[[	Version 1.1.0     6/30/2018
-
+--[[About this plugin
 This plugin adds the module "OpenInExplorer" to darktable's lighttable view
 
-****Dependencies****
-OS: Windows (tested)
+----REQUIRED SOFTWARE----
+Microsoft Windows Operating System
 
-****How to use****
-Require this file from your luarc file, as with any other dt plug-in.
+----USAGE----
+Install: (see here for more detail: https://github.com/darktable-org/lua-scripts )
+ 1) Copy this file in to your "lua/contrib" folder where all other scripts reside. 
+ 2) Require this file in your luarc file, as with any other dt plug-in
+
 Select the photo(s) you wish to find in explorer and press "Go to Folder". 
-A file explorer window will be opened for each selected file, and that file's folder location will be navigated to, and the file highlighted
+A file explorer window will be opened for each selected file at the file's location; the file will be highlighted.
+
+----KNOWN ISSUES----
 ]]
 
 local dt = require "darktable"
 local df = require "lib/dtutils.file"
+local dsys = require "lib/dtutils.system"
 require "official/yield"
 
 --Detect OS and modify accordingly--	
@@ -50,9 +55,9 @@ local function OpenInExplorer() --Open in Explorer
 	
 	for _,image in pairs(images) do 
 		curr_image = image.path..'\\'..image.filename
-		run_cmd = "explorer.exe /select, "..curr_image
+		local run_cmd = "explorer.exe /select, "..curr_image
 		dt.print_log("OpenInExplorer run_cmd = "..run_cmd)
-		resp = dt.control.execute(run_cmd)
+		resp = dsys.external_command(run_cmd)
 	end
 end
 
